@@ -8,10 +8,10 @@ def main():
 
 
 def copy_static_to_public():
-    shutil.rmtree("./public")
+    shutil.rmtree("./public", ignore_errors=True)
     shutil.copytree("./static", "./public")
 
 
 if __name__ == "__main__":
     copy_static_to_public()
-    main()
+    main()  
