@@ -1,1 +1,1 @@
-python3 src/main.py
+python3 src/main.py "/boot.dev-static-site-generator/"
