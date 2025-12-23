@@ -7,9 +7,8 @@ import blocktype
 
 
 def main():
-    basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
     copy_static_to_public()
-    generate_pages_recursive(basepath, "content", "template.html", "docs")
+    generate_pages_recursive("content", "template.html", "docs")
 
 
 def copy_static_to_public():
@@ -17,7 +16,7 @@ def copy_static_to_public():
     shutil.copytree("./static", "./docs")
 
 
-def generate_pages_recursive(base_path, dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
     for root, dirs, files in os.walk(dir_path_content):
         for f in files:
             file_path = os.path.join(root, f)
@@ -25,10 +24,10 @@ def generate_pages_recursive(base_path, dir_path_content, template_path, dest_di
                 path = pathlib.Path(file_path)
                 dest_path = pathlib.Path(dest_dir_path) / pathlib.Path(*path.parts[1:]).with_suffix(".html")
                 dest_path.parent.mkdir(parents=True, exist_ok=True)
-                generate_page(base_path, file_path, template_path, dest_path)    
+                generate_page(file_path, template_path, dest_path)    
 
 
-def generate_page(base_path, from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path):
     print("".join([
         f"Generating page", 
         f"    from: \033[1m{from_path}\033[0m",
@@ -41,8 +40,7 @@ def generate_page(base_path, from_path, template_path, dest_path):
     title = blocktype.extract_title(markdown)
     page = template \
         .replace("{{ Title }}", title) \
-        .replace("{{ Content }}", content) \
-        .replace("{{ Basepath }}", base_path)
+        .replace("{{ Content }}", content)
     with open(dest_path, 'w') as f: f.write(page)
     
 
