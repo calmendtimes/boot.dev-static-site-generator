@@ -145,3 +145,28 @@ class Test_block_to_block_type(unittest.TestCase):
             blocktype.BlockType.paragraph
         ]
         self.assertEqual(expected, types)
+
+
+class Test_extract_title(unittest.TestCase):
+    def test_extracts_title(self):
+        md = [
+            "### h3",
+            "",
+            "## h2",
+            "",
+            "# h1 heading",
+            "asdfasdf"
+            ""]
+        md = "\n".join(md)
+        heading = blocktype.extract_title(md)
+        self.assertEqual( heading, "h1 heading" )
+
+    def test_throws_when_no_heading_found(self):
+        md = [
+            "### h3",
+            "",
+            "## h2",
+            ""]
+        md = "\n".join(md)
+        with self.assertRaises(Exception):
+            blocktype.extract_title(md)

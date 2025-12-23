@@ -73,6 +73,16 @@ def block_to_block_type(block):
 
 
 
+def extract_title(markdown):
+    blocks = markdown_to_blocks(markdown)
+    for b in blocks:
+        block_type = block_to_block_type(b)
+        if block_type == BlockType.heading:
+            if b[0:2] == "# ":
+                return b.split("\n")[0][2:]
+    raise Exception("No heading '# ' found.")
+
+
 def paragraph_to_html(block):
     block = block.replace("\n", " ")
     text_nodes = textnode.text_to_textnodes(block)     
